@@ -16,24 +16,24 @@ export default async function TradesPage() {
   return (
     <AppShell email={user.email ?? ""}>
       <h1 className="font-serif text-3xl tracking-tight">Trade history</h1>
-      <p className="mt-2 text-sm text-[#8A8780]">No trades yet. Trade history arrives in phase 7.</p>
+      <p className="mt-2 text-sm text-muted">No trades yet. Trade history arrives in phase 7.</p>
 
-      <section className="mt-10 rounded-xl border border-white/[0.08] bg-white/[0.04] p-6">
-        <h2 className="text-xs uppercase tracking-widest text-[#8A8780]">Active ruleset</h2>
-        {error && <p className="mt-3 text-sm text-[#D98E3A]">Could not load ruleset: {error.message}</p>}
+      <section className="mt-10 rounded-xl border border-border bg-white/[0.04] p-6">
+        <h2 className="text-xs uppercase tracking-widest text-muted">Active ruleset</h2>
+        {error && <p className="mt-3 text-sm text-amber">Could not load ruleset: {error.message}</p>}
         {!error && !ruleset && (
-          <p className="mt-3 text-sm text-[#D98E3A]">No active ruleset found for this account.</p>
+          <p className="mt-3 text-sm text-amber">No active ruleset found for this account.</p>
         )}
         {ruleset && (
           <>
             <p className="mt-2 font-serif text-xl">
-              {ruleset.name} <span className="font-mono text-sm text-[#8A8780]">v{ruleset.version}</span>
+              {ruleset.name} <span className="num text-sm text-muted">v{ruleset.version}</span>
             </p>
             <ul className="mt-4 divide-y divide-white/[0.06] text-sm">
               {ruleset.stages.map((s) => (
                 <li key={s.name} className="flex justify-between py-2">
                   <span>{s.name}</span>
-                  <span className="font-mono tabular-nums text-[#8A8780]">
+                  <span className="num text-muted">
                     {s.checks.length} checks · weight {s.weight}
                   </span>
                 </li>

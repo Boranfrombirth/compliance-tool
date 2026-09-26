@@ -66,10 +66,10 @@ export default function LoginForm({ next, linkError }: { next: string; linkError
   }
 
   const inputClass =
-    "w-full rounded-md border border-white/[0.08] bg-white/[0.04] px-3 py-2.5 text-sm text-[#E8E6E1] placeholder:text-[#8A8780]/60 outline-none transition focus:border-[#C9A96E]/60";
+    "w-full rounded-md border border-border bg-white/[0.04] px-3 py-2.5 text-sm text-text placeholder:text-muted/60 outline-none transition focus:border-accent/60";
 
   return (
-    <div className="rounded-xl border border-white/[0.08] bg-white/[0.04] p-6 backdrop-blur-md">
+    <div className="rounded-xl border border-border bg-white/[0.04] p-6 backdrop-blur-md">
       <div className="mb-6 grid grid-cols-3 gap-1 rounded-md bg-black/30 p-1 text-xs">
         {TABS.map((t) => (
           <button
@@ -81,7 +81,7 @@ export default function LoginForm({ next, linkError }: { next: string; linkError
               setNotice(null);
             }}
             className={`rounded px-2 py-1.5 transition ${
-              mode === t.mode ? "bg-white/[0.08] text-[#C9A96E]" : "text-[#8A8780] hover:text-[#E8E6E1]"
+              mode === t.mode ? "bg-white/[0.08] text-accent" : "text-muted hover:text-text"
             }`}
           >
             {t.label}
@@ -90,7 +90,7 @@ export default function LoginForm({ next, linkError }: { next: string; linkError
       </div>
 
       <form onSubmit={onSubmit} className="flex flex-col gap-3">
-        <label className="flex flex-col gap-1.5 text-xs text-[#8A8780]">
+        <label className="flex flex-col gap-1.5 text-xs text-muted">
           Email
           <input
             type="email"
@@ -103,7 +103,7 @@ export default function LoginForm({ next, linkError }: { next: string; linkError
         </label>
 
         {mode !== "magic" && (
-          <label className="flex flex-col gap-1.5 text-xs text-[#8A8780]">
+          <label className="flex flex-col gap-1.5 text-xs text-muted">
             Password
             <input
               type="password"
@@ -117,13 +117,13 @@ export default function LoginForm({ next, linkError }: { next: string; linkError
           </label>
         )}
 
-        {error && <p className="text-xs text-[#D98E3A]">{error}</p>}
-        {notice && <p className="text-xs text-[#C9A96E]">{notice}</p>}
+        {error && <p className="text-xs text-amber">{error}</p>}
+        {notice && <p className="text-xs text-accent">{notice}</p>}
 
         <button
           type="submit"
           disabled={busy}
-          className="mt-2 rounded-md bg-[#C9A96E] px-3 py-2.5 text-sm font-medium text-[#0B0C0E] transition hover:bg-[#d4b67e] disabled:opacity-50"
+          className="mt-2 rounded-md bg-accent px-3 py-2.5 text-sm font-medium text-bg transition hover:brightness-110 disabled:opacity-50"
         >
           {busy
             ? "Please wait…"

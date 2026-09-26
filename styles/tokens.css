@@ -1,0 +1,17 @@
+/* Design tokens from SPEC.md → Design spec → Palette. Dark only by design. */
+:root {
+  --bg: #0b0c0e;
+  --surface: rgba(255, 255, 255, 0.04);
+  --surface-blur: 12px;
+  --border: rgba(255, 255, 255, 0.08);
+  --text: #e8e6e1;
+  --muted: #8a8780;
+  --accent: #c9a96e;
+  --amber: #d98e3a;
+  --neutral: #3a3b3f;
+
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --duration: 250ms;
+
+  color-scheme: dark;
+}

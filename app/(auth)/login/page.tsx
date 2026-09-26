@@ -9,10 +9,10 @@ export default async function LoginPage({ searchParams }: PageProps<"/login">) {
   const linkError = params.error === "link";
 
   return (
-    <main className="flex min-h-screen items-center justify-center bg-[#0B0C0E] px-4 py-12 text-[#E8E6E1]">
+    <main className="flex min-h-screen items-center justify-center bg-bg px-4 py-12 text-text">
       <div className="w-full max-w-sm">
         <h1 className="mb-1 text-center font-serif text-3xl tracking-tight">Trade Compliance</h1>
-        <p className="mb-8 text-center text-sm text-[#8A8780]">
+        <p className="mb-8 text-center text-sm text-muted">
           Every trade, graded against your own rules.
         </p>
         <LoginForm next={next} linkError={linkError} />
