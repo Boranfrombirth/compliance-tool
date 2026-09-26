@@ -8,15 +8,15 @@ import { loadResults, loadRuleset, toAnswers } from "@/lib/trades/load";
 
 export const metadata = { title: "Trade summary · Trade Compliance" };
 
-// Summary of a submitted trade. Phase 7 extends this; scores are recomputed from the
-// ruleset version the trade was graded under.
+// Summary of a submitted trade. Stage scores are recomputed from the ruleset version the
+// trade was graded under; the stored total is what was locked at submit.
 export default async function TradeSummaryPage({ params }: PageProps<"/trade/[id]">) {
   const { id } = await params;
   const { supabase, user } = await requireUser();
 
   const { data: trade } = await supabase
     .from("trades")
-    .select("id, ruleset_id, status, pair, direction, total_score, non_compliant, submitted_at")
+    .select("id, ruleset_id, status, pair, direction, total_score, non_compliant, submitted_at, entry, stop, target, session, model_tag, result_r")
     .eq("id", id)
     .maybeSingle();
   if (!trade) notFound();
@@ -31,6 +31,23 @@ export default async function TradeSummaryPage({ params }: PageProps<"/trade/[id
   const total = Number(trade.total_score ?? result.total);
   const nonCompliant = trade.non_compliant ?? result.nonCompliant;
 
+  const r = trade.result_r === null ? null : Number(trade.result_r);
+  const details = (
+    [
+      ["Result", r === null ? null : `${r > 0 ? "+" : ""}${r}R`],
+      ["Entry", trade.entry],
+      ["Stop", trade.stop],
+      ["Target", trade.target],
+      ["Session", trade.session],
+      ["Model", trade.model_tag],
+    ] as [string, string | number | null][]
+  ).filter((d): d is [string, string | number] => d[1] !== null && d[1] !== "");
+
+  const notes = ruleset.stages
+    .flatMap((s) => s.checks)
+    .filter((c) => c.inputType === "text" && results[c.id]?.text.trim())
+    .map((c) => ({ label: c.label, text: results[c.id].text }));
+
   return (
     <AppShell email={user.email ?? ""}>
       <p className="text-[10px] uppercase tracking-[0.2em] text-muted">
@@ -40,6 +57,17 @@ export default async function TradeSummaryPage({ params }: PageProps<"/trade/[id
       <h1 className="font-serif text-3xl tracking-tight">
         {[trade.pair, trade.direction].filter(Boolean).join(" · ") || "Trade"}
       </h1>
+
+      {details.length > 0 && (
+        <dl className="mt-4 flex flex-wrap gap-x-6 gap-y-2 text-sm">
+          {details.map(([k, v]) => (
+            <div key={k} className="flex items-baseline gap-2">
+              <dt className="text-[10px] uppercase tracking-[0.15em] text-muted">{k}</dt>
+              <dd className="num">{v}</dd>
+            </div>
+          ))}
+        </dl>
+      )}
 
       <section className="panel mt-8 flex flex-col items-center gap-3 rounded-2xl p-8">
         <ProgressRing value={total} size={160} tone={nonCompliant ? "amber" : "accent"} label="Total score" />
@@ -84,6 +112,18 @@ export default async function TradeSummaryPage({ params }: PageProps<"/trade/[id
             ))
         )}
       </section>
+
+      {notes.length > 0 && (
+        <section className="panel mt-6 rounded-2xl p-6">
+          <h2 className="text-[10px] uppercase tracking-[0.2em] text-muted">Notes</h2>
+          {notes.map((n) => (
+            <div key={n.label} className="mt-4">
+              <h3 className="text-xs text-muted">{n.label}</h3>
+              <p className="mt-1 whitespace-pre-wrap text-sm leading-relaxed">{n.text}</p>
+            </div>
+          ))}
+        </section>
+      )}
 
       <div className="mt-8 flex gap-4 text-sm">
         <Link href="/trade/new" className="rounded-md bg-accent px-4 py-2 font-medium text-bg hover:brightness-110">
