@@ -1,9 +1,11 @@
 import Link from "next/link";
+import Background from "./Background";
 
-// Minimal signed-in frame; the stepper layout arrives in phase 6.
+// Signed-in frame: top nav, backdrop and a centred content column.
 export default function AppShell({ email, children }: { email: string; children: React.ReactNode }) {
   return (
-    <div className="min-h-screen bg-bg text-text">
+    <div className="relative min-h-screen text-text">
+      <Background />
       <header className="flex items-center justify-between border-b border-border px-4 py-3 sm:px-8">
         <nav className="flex items-center gap-5 text-sm">
           <Link href="/trades" className="font-serif text-lg tracking-tight">
