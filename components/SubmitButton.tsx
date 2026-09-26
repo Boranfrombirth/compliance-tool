@@ -1,0 +1,21 @@
+"use client";
+
+import { useFormStatus } from "react-dom";
+
+// Form submit button that shows a pending label while its server action runs.
+export default function SubmitButton({
+  children,
+  pendingText,
+  className = "",
+}: {
+  children: React.ReactNode;
+  pendingText: string;
+  className?: string;
+}) {
+  const { pending } = useFormStatus();
+  return (
+    <button type="submit" disabled={pending} aria-disabled={pending} className={`${className} disabled:opacity-60`}>
+      {pending ? pendingText : children}
+    </button>
+  );
+}

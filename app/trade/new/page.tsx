@@ -1,4 +1,5 @@
 import AppShell from "@/components/AppShell";
+import SubmitButton from "@/components/SubmitButton";
 import { requireUser } from "@/lib/supabase/require-user";
 import { loadResults, loadRuleset } from "@/lib/trades/load";
 import { DETAIL_COLUMNS, type TradeDetails } from "@/lib/trades/types";
@@ -71,12 +72,12 @@ export default async function NewTradePage() {
               ))}
             </div>
           </fieldset>
-          <button
-            type="submit"
+          <SubmitButton
+            pendingText="Starting…"
             className="mt-2 rounded-md bg-accent px-4 py-2.5 text-sm font-medium text-bg transition hover:brightness-110"
           >
             Start trade
-          </button>
+          </SubmitButton>
         </form>
       </div>
     </AppShell>
